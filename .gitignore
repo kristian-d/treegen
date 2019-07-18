@@ -9,6 +9,7 @@
 .idea/**/shelf
 
 # Generated files
+.idea/**/vcs.xml
 .idea/**/contentModel.xml
 
 # Sensitive or high-churn files
