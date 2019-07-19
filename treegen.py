@@ -1,6 +1,7 @@
 from map import Map
 from map import generate_new_map_filename
 from random import randint
+from os.path import isfile
 from random import sample
 from copy import deepcopy
 from copy import copy
@@ -129,7 +130,11 @@ def mutation(pop):
 def main():
     m = None
     if len(sys.argv) == 2:
-        m = Map(filename=sys.argv[1])
+        if isfile('./' + sys.argv[1]):
+            m = Map(filename=sys.argv[1])
+        else:
+            print('The file ' + sys.argv[1] + ' does not exist in the root directory.')
+            sys.exit()
     elif len(sys.argv) == 3:
         try:
             height = int(sys.argv[1])
