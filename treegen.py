@@ -7,15 +7,15 @@ from copy import deepcopy
 from copy import copy
 import sys
 
-POPULATION_SIZE = 15
+POPULATION_SIZE = 50
 SUNLIGHT_REQUIREMENT = 4
 WATER_REQUIREMENT = 9
-TREE_SURVIVAL_SCORE_INCREMENT = 1
+TREE_SURVIVAL_SCORE_INCREMENT = 1.5
 COMPETITION_SCORE_INCREMENT = 1
 OUT_OF_BOUNDS_WATER_ASSUMPTION = 2
-CROSSOVER_FREQUENCY = 0.33
-MUTATION_FREQUENCY = 0.05
-MAX_GENERATIONS = 500
+CROSSOVER_FREQUENCY = 0.3
+MUTATION_FREQUENCY = 0.1
+MAX_GENERATIONS = 1000
 
 
 def generate_initial_population(height, width, size):
@@ -56,7 +56,7 @@ def fitness(configuration, resource_layout):
     return float(tree_survival_score) / float(competition)
 
 
-def selection(pop, m):  # using the technique known as Fitness Proportionate Selection
+def selection(pop, m, crossover_frequency=CROSSOVER_FREQUENCY):  # using the technique known as Fitness Proportionate Selection
     fitness_score_sum = 0
     highest_fitness_score_seen = 0
     best_solution = None
@@ -64,7 +64,7 @@ def selection(pop, m):  # using the technique known as Fitness Proportionate Sel
         fit_score = fitness(ind['configuration'], m.get_layout())
         ind['fitness'] = fit_score
         fitness_score_sum += fit_score
-        if fit_score > highest_fitness_score_seen or highest_fitness_score_seen is None:
+        if fit_score > highest_fitness_score_seen:
             highest_fitness_score_seen = fit_score
             best_solution = deepcopy(ind)
 
@@ -77,7 +77,7 @@ def selection(pop, m):  # using the technique known as Fitness Proportionate Sel
         accumulated_value += ind['selection_fitness']
         ind['accumulated_value'] = accumulated_value
 
-    num_crossovers = int(round(CROSSOVER_FREQUENCY * len(pop)))
+    num_crossovers = int(round(crossover_frequency * len(pop)))
     to_crossover = []
     partners = []
     to_continue = []
@@ -116,15 +116,15 @@ def crossover(to_crossover):
     return new_individuals
 
 
-def mutation(pop):
-    num_mutations = int(round(MUTATION_FREQUENCY * len(pop)))
+def mutation(pop, mutation_frequency=MUTATION_FREQUENCY):
+    num_mutations = int(round(mutation_frequency * len(pop)))
     to_mutate = sample(pop, num_mutations)
     for ind in to_mutate:
         mutate = True
         while mutate:
             mutated_gene = [randint(0, 1) for i in range(0, len(ind['configuration'][0]))]
             ind['configuration'][randint(0, len(ind['configuration']) - 1)] = mutated_gene
-            mutate = True if randint(0, 100) <= int(MUTATION_FREQUENCY * 100) else False
+            mutate = True if randint(0, 100) <= int(mutation_frequency * 100) else False
 
 
 def main():
@@ -159,6 +159,8 @@ def main():
     pop = generate_initial_population(m.get_height(), m.get_width(), POPULATION_SIZE)
 
     for i in range(MAX_GENERATIONS):
+
+        print('Generation number: ' + str(i + 1))
         best_solution_in_population, to_continue, to_crossover = selection(pop, m)
         print('Best in population: ' + str(best_solution_in_population['fitness']))
         if best_solution is None or best_solution_in_population['fitness'] > best_solution['fitness']:
@@ -167,6 +169,8 @@ def main():
         print('Best overall: ' + str(best_solution['fitness']))
         pop = to_continue + crossover(to_crossover)
         mutation(pop)
+
+        print('')
 
 
 if __name__ == '__main__':
