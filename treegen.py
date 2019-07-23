@@ -105,11 +105,11 @@ def selection(pop, m):  # using the technique known as Fitness Proportionate Sel
 def crossover(to_crossover):
     new_individuals = []
     for (partner_1, partner_2) in to_crossover:
-        crossover_on = randint(0, len(partner_1) - 1)
+        crossover_on = randint(0, len(partner_1['configuration']) - 1)
         new_individual_layout = []
         for i in range(0, crossover_on):
             new_individual_layout.append(deepcopy(partner_1['configuration'][i]))
-        for i in range(crossover_on, len(partner_2)):
+        for i in range(crossover_on, len(partner_2['configuration'])):
             new_individual_layout.append(deepcopy(partner_2['configuration'][i]))
         new_individuals.append({'configuration': new_individual_layout})
 
