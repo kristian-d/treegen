@@ -7,6 +7,7 @@ from copy import deepcopy
 from copy import copy
 import sys
 
+
 POPULATION_SIZE = 50
 SUNLIGHT_REQUIREMENT = 4
 WATER_REQUIREMENT = 9
@@ -16,6 +17,13 @@ OUT_OF_BOUNDS_WATER_ASSUMPTION = 2
 CROSSOVER_FREQUENCY = 0.3
 MUTATION_FREQUENCY = 0.1
 MAX_GENERATIONS = 1000
+
+
+def getMAX_GENERATIONS():
+    return MAX_GENERATIONS
+
+def getPOPULATION_SIZE():
+    return POPULATION_SIZE
 
 
 def generate_initial_population(height, width, size):
@@ -155,11 +163,9 @@ def main():
         sys.exit()
 
     best_solution = None
-
     pop = generate_initial_population(m.get_height(), m.get_width(), POPULATION_SIZE)
 
     for i in range(MAX_GENERATIONS):
-
         print('Generation number: ' + str(i + 1))
         best_solution_in_population, to_continue, to_crossover = selection(pop, m)
         print('Best in population: ' + str(best_solution_in_population['fitness']))
@@ -169,9 +175,8 @@ def main():
         print('Best overall: ' + str(best_solution['fitness']))
         pop = to_continue + crossover(to_crossover)
         mutation(pop)
-
         print('')
-
+    
 
 if __name__ == '__main__':
     main()
