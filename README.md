@@ -19,3 +19,6 @@ number of generations each trial run of the algorithm will complete before retur
 second argument is the number of trials to run. The third argument is the file name of the file containing the map 
 configuration to be tested. The fourth argument is optional and determines how many parallel processes to use for 
 running trials; the default value is 1 process.
+
+To create a graph of fitness data. 'python graph.py __' where the blank is filename containing the map you want to use.
+To create a graph of the fitness data on a entirely new map. 'python graph.py __ __' where the blanks are integer arguments for the height and width of the map.
