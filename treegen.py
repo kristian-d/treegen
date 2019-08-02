@@ -4,18 +4,20 @@ from random import randint
 from os.path import isfile
 from random import sample
 from copy import deepcopy
-from copy import copy
 import sys
 
-POPULATION_SIZE = 50
 SUNLIGHT_REQUIREMENT = 4
 WATER_REQUIREMENT = 9
 TREE_SURVIVAL_SCORE_INCREMENT = 1.5
 COMPETITION_SCORE_INCREMENT = 1
 OUT_OF_BOUNDS_WATER_ASSUMPTION = 2
-CROSSOVER_FREQUENCY = 0.3
-MUTATION_FREQUENCY = 0.1
-MAX_GENERATIONS = 1000
+
+################################################
+POPULATION_SIZE = 50
+CROSSOVER_FREQUENCY = 0.30
+MUTATION_FREQUENCY = 0.10
+MAX_GENERATIONS = 8000
+################################################
 
 
 def generate_initial_population(height, width, size):
@@ -162,6 +164,7 @@ def main():
 
         print('Generation number: ' + str(i + 1))
         best_solution_in_population, to_continue, to_crossover = selection(pop, m)
+
         print('Best in population: ' + str(best_solution_in_population['fitness']))
         if best_solution is None or best_solution_in_population['fitness'] > best_solution['fitness']:
             best_solution = best_solution_in_population
